@@ -36,8 +36,12 @@ class MarkdownPlugin extends MantisPlugin {
 		);
 	}
 
-	function display_formatted($p_string, $p_extra=null) {
-		return array( $this->pd->text( $p_string ), TRUE );
+	function display_formatted( $p_event, $p_string, $p_extra=null ) {
+		$res = $this->pd->text( $p_string );
+		$count = 0;
+		$res = preg_replace( '/^<p>/', '', $res, 1, &$count );
+		if( $count > 0 ) { $res = preg_replace( '!</p>$!', '', $res ); }
+		return $res;
 	}
 
 }
