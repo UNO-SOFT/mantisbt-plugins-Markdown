@@ -44,13 +44,17 @@ class MarkdownPlugin extends MantisPlugin {
 		}
 		$p_string = substr( $p_string, 4 );
 		$p_string = str_replace( "<br />\r\n", "\n", $p_string );
+		$olen = strlen( $p_string );
 		$p_string = str_replace( ' * ', ' \* ', $p_string );
+		$changed_stars = $olen - strlen( $p_string );
 		$res = $this->pd->text( $p_string );
 		$count = 0;
 		if( strpos( $res, '<p>' ) === 0 && strpos( $res, '<p>', 3 ) === false ) {
 			$res = substr( $res, 3, strlen( $res ) - 3 - 4 );
 		}
-		$res = str_replace( ' \* ', ' * ', $res );
+		if( $changed_stars > 0 ) {
+			$res = str_replace( ' \* ', ' * ', $res );
+		}
 		return $res;
 	}
 
