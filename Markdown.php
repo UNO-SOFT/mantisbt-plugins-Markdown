@@ -24,6 +24,8 @@ class MarkdownPlugin extends MantisPlugin {
 
 		require_once( dirname(__FILE__) . '/core/Parsedown.php' );
 		$this->pd = new Parsedown();
+		$this->pd->setMarkupEscaped(FALSE);
+		$this->pd->setBreaksEnabled(FALSE);
 	}
 
 	function config() {
@@ -37,10 +39,18 @@ class MarkdownPlugin extends MantisPlugin {
 	}
 
 	function display_formatted( $p_event, $p_string, $p_extra=null ) {
+		if( substr( $p_string, 0, 4 ) !== '#MD#' ) {
+			return $p_string;
+		}
+		$p_string = substr( $p_string, 4 );
+		$p_string = str_replace( "<br />\r\n", "\n", $p_string );
+		$p_string = str_replace( ' * ', ' \* ', $p_string );
 		$res = $this->pd->text( $p_string );
 		$count = 0;
-		$res = preg_replace( '/^<p>/', '', $res, 1, &$count );
-		if( $count > 0 ) { $res = preg_replace( '!</p>$!', '', $res ); }
+		if( strpos( $res, '<p>' ) === 0 && strpos( $res, '<p>', 3 ) === false ) {
+			$res = substr( $res, 3, strlen( $res ) - 3 - 4 );
+		}
+		$res = str_replace( ' \* ', ' * ', $res );
 		return $res;
 	}
 
