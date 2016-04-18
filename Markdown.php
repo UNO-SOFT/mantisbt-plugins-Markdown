@@ -93,6 +93,8 @@ class MarkdownPlugin extends MantisFormattingPlugin {
 			return $p_string;
 		}
 		$t_string = md_strip_mark( $p_string );
+		
+		// Try to "deformat" to get the original text back.
 		$t_string = str_replace( "<br />\r\n", "\n", $t_string );
 		$olen = strlen( $t_string );
 		$t_string = str_replace( ' * ', ' \* ', $t_string );
