@@ -29,17 +29,16 @@ class MarkdownPlugin extends MantisFormattingPlugin {
 		$this->description = 'Markdown note renderer.';	# Short description of the plugin
 		$this->page = 'config';		   # Default plugin page
 
-		$this->version = '0.2';	 # Plugin version string
+		$this->version = '0.3';	 # Plugin version string
 		$this->requires = array(	# Plugin dependencies, array of basename => version pairs
-			'MantisCore' => '1.3.0',  #   Should always depend on an appropriate version of MantisBT
-			'MantisCore' => '2.0.0',
+			'MantisCore' => '2.1.0',
 			);
 
 		$this->author = 'Tamás Gulácsi';		 # Author/team name
 		$this->contact = 'T.Gulacsi@unosoft.hu';		# Author/team e-mail address
 		$this->url = 'http://www.unosoft.hu';			# Support webpage
 
-		require_once( dirname(__FILE__) . '/core/Parsedown.php' );
+		require_once(MANTIS_DIR . '/library/parsedown/Parsedown.php');
 		$this->pd = new Parsedown();
 		$this->pd->setMarkupEscaped(FALSE);
 		$this->pd->setBreaksEnabled(FALSE);
