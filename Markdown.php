@@ -38,7 +38,13 @@ class MarkdownPlugin extends MantisFormattingPlugin {
 		$this->contact = 'T.Gulacsi@unosoft.hu';		# Author/team e-mail address
 		$this->url = 'http://www.unosoft.hu';			# Support webpage
 
-		require_once(MANTIS_DIR . '/library/parsedown/Parsedown.php');
+		foreach( array('vendor/erusev', 'library') as $t_base )	{
+			$t_fn = MANTIS_DIR . '/' . $t_base . '/parsedown/Parsedown.php';
+			if( file_exists( $t_fn ) ) {
+				require_once( $t_fn );
+				break;
+			}
+		}
 		$this->pd = new Parsedown();
 		$this->pd->setMarkupEscaped(FALSE);
 		$this->pd->setBreaksEnabled(FALSE);
